@@ -1,9 +1,11 @@
 const cors = require('cors');
 
-const corsOptions = {
-  origin: 'http://localhost:3000', // React uygulamanızın adresi
-  credentials: true,
-  optionsSuccessStatus: 200, // bazı tarayıcılar için gerekli
-};
+// CORS middleware tanımı
+const corsMiddleware = cors({
+  origin: '*', // İstemcilere erişim izni verilen domainleri belirtin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Kimlik bilgilerinin gönderilmesine izin ver
+  optionsSuccessStatus: 204 // OPTIONS isteği başarılı olduğunda durum kodu
+});
 
-module.exports = cors(corsOptions);
+module.exports = corsMiddleware;
