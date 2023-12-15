@@ -1,4 +1,4 @@
-const Product = require('../models/Product');
+const Product = require('../models/ProductModel');
 const { notFoundError } = require('../utils/errors');
 
 // fetch all products
@@ -27,6 +27,7 @@ const getProductById = async (req, res, next) => {
 
 // add a new product
 const addProduct = async (req, res, next) => {
+  console.log('req: ', req);
   const { name, price, description } = req.body;
   //TODO: use JOI for validation req data.
   const newProduct = new Product({ name, price, description });
