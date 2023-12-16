@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 const dbConf = require('./databaseConfig');
-const Product = require('../models/ProductModel');
+const AppConfigSchema = require('../models/AppConfigModal');
 
 // db connection
 const connectDB = async () => {
   try {
     await mongoose.connect(dbConf.dbURL, dbConf.options);
-
-    // Check the existence of each model and create if not present
-    await checkAndCreateModel(Product);
+    initializeAppConfig();
 
     console.log('MongoDB Connected');
   } catch (error) {
@@ -32,14 +30,21 @@ mongoose.connection.on('disconnected', () => {
   console.log('MongoDB connection has been lost.');
 });
 
-// Check the existence of the model and create if no0t present
-const checkAndCreateModel = async model => {
+// Function that will run when the application starts
+const initializeAppConfig = async () => {
   try {
-    // If the model already exists, continue
-    mongoose.model(model.modelName);
-  } catch {
-    // If the model does not exist, create it
-    await model.init();
+    // Eğer AppConfig koleksiyonunda herhangi bir belge yoksa ekleyin
+    const count = await AppConfigSchema.countDocuments();
+    if (count === 0) {
+      const defaultConfig = {
+        currency: 'USD',
+        currencySymbol: '$'
+      };
+      await AppConfigSchema.create(defaultConfig);
+      console.log('Default AppConfig added to the database.');
+    }
+  } catch (error) {
+    console.error('Error initializing AppConfig:', error);
   }
 };
 

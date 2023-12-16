@@ -3,7 +3,7 @@ const setProcessTitle = require('./config/processTitle');
 const app = require('./config/express');
 const connectDB = require('./config/database');
 
-// Connect mongoDB
+// Connect mongoDB and add initial datas
 connectDB();
 
 // Set process title

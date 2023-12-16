@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "npx nodemon app.js",
+    "start": "npx nodemon server/server.js",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -17,6 +17,7 @@
     "mongoose": "^8.0.3"
   },
   "devDependencies": {
+    "@types/node": "^20.10.4",
     "eslint": "^8.55.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",

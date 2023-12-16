@@ -1,7 +1,7 @@
 const Product = require('../models/ProductModel');
 const { notFoundError } = require('../utils/errors');
 
-// fetch all products
+// Fetch all products
 const getAllProducts = async (req, res, next) => {
   try {
     const products = await Product.find();
@@ -11,7 +11,7 @@ const getAllProducts = async (req, res, next) => {
   }
 };
 
-// fetch a specific product
+// Fetch a specific product
 const getProductById = async (req, res, next) => {
   const productId = req.param.productId;
   try {
@@ -25,7 +25,7 @@ const getProductById = async (req, res, next) => {
   }
 };
 
-// add a new product
+// Add a new product
 const addProduct = async (req, res, next) => {
   console.log('req: ', req);
   const { name, price, description } = req.body;
@@ -40,7 +40,7 @@ const addProduct = async (req, res, next) => {
   }
 };
 
-// update a product
+// Update a product
 const updateProduct = async (req, res, next) => {
   const productId = req.params.productId;
   const { name, price, description } = req.body;
@@ -57,7 +57,7 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-// delete a product
+// Delete a product
 const deleteProduct = async (req, res, next) => {
   const productId = req.params.productId;
 

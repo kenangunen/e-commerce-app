@@ -1,3 +1,5 @@
+// buraya ne koyabilirim?
+
 const appConfig = {
   exitProcess: () => {
     console.log('application is closing');
