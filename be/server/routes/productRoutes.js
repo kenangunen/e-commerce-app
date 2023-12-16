@@ -8,6 +8,9 @@ router.get('/products', productController.getAllProducts);
 // Get a specific product
 router.get('/products/:productId', productController.getProductById);
 
+// Get products by categoryName
+router.get('products/:categoryName', productController.getProductsByCategory);
+
 // Add a new product
 router.post('/products', productController.addProduct);
 

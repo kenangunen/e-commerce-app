@@ -14,12 +14,28 @@ const getAllProducts = async (req, res, next) => {
 // Fetch a specific product
 const getProductById = async (req, res, next) => {
   const productId = req.param.productId;
+
   try {
     const product = await Product.findById(productId);
 
     notFoundError(productId, 'product');
 
     res.json(product);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Fetch all products in a specific category.
+const getProductsByCategory = async (req, res, next) => {
+  const categoryName = req.param.categoryName;
+
+  try {
+    const products = await Product.find({ categoryName: categoryName });
+
+    notFoundError(products, 'products');
+
+    res.json(products);
   } catch (error) {
     next(error);
   }
@@ -77,5 +93,6 @@ module.exports = {
   getProductById,
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductsByCategory
 };

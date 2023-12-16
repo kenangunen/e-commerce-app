@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
     maxlength: [50, '{PATH}  alanı (`{VALUE}`), ({MAXLENGTH}) karakterden küçük olmalıdır.'],
     minlength: [3, '{PATH}  alanı (`{VALUE}`), ({MINLENGTH}) karakterden büyük olmalıdır. ']
   },
-  category: {
+  categoryName: {
     type: String,
     minlength: [3, 'Kategori alanı minimum {MINLENGTH} karakter olabilir.'],
     maxlength: 30
