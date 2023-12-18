@@ -44,9 +44,22 @@ const getProductsByCategory = async (req, res, next) => {
 // Add a new product
 const addProduct = async (req, res, next) => {
   console.log('req: ', req);
-  const { name, price, description } = req.body;
+  const { productName, colorName, sellerName, brandName, categoryName, price, description, stock, image } = req.body;
   //TODO: use JOI for validation req data.
-  const newProduct = new Product({ name, price, description });
+
+  const bufferData = Buffer.from(image, 'base64');
+
+  const newProduct = new Product({
+    productName,
+    colorName,
+    sellerName,
+    brandName,
+    categoryName,
+    price,
+    description,
+    stock,
+    image: bufferData
+  });
 
   try {
     const savedProduct = await newProduct.save();

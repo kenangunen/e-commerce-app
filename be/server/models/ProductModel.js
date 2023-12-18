@@ -47,7 +47,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, '{PATH} alanı zorunludur.']
     },
-    images: [String],
+    image: Buffer,
     addedDate: {
       type: Date,
       default: Date.now()
