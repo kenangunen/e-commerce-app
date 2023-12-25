@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { randomUUID } = require('crypto');
+const { setStockStatusOnSave } = require('../middleware/productMiddleware');
 
 const productSchema = new mongoose.Schema(
   {
@@ -43,8 +44,13 @@ const productSchema = new mongoose.Schema(
       maxlength: [200, '{PATH}  alanı (`{VALUE}`), ({MAXLENGTH}) karakterden küçük olmalıdır.'],
       required: [true, '{PATH} alanı zorunludur.']
     },
-    stock: {
+    stockCount: {
       type: Number,
+      required: [true, '{PATH} alanı zorunludur.']
+    },
+    stockStatus: {
+      type: Boolean,
+      default: true,
       required: [true, '{PATH} alanı zorunludur.']
     },
     image: Buffer,
@@ -54,6 +60,7 @@ const productSchema = new mongoose.Schema(
     }
   },
   {
+    shardKey: { categoryName: 1 },
     toJSON: { virtuals: true },
     virtuals: {
       fullProductName: {
@@ -70,6 +77,9 @@ const productSchema = new mongoose.Schema(
     }
   }
 );
+
+//middileware
+setStockStatusOnSave(productSchema);
 
 const Product = mongoose.model('Product', productSchema);
 
