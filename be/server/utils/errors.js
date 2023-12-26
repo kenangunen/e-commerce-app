@@ -1,5 +1,5 @@
-const notFoundError = (value, name) => {
-    if (!value) {
+const notFoundError = (data, name) => {
+    if (!data || data.length === 0) {
         const error = new Error(`${name} not found!`);
         error.status = 404;
         throw error;

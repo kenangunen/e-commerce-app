@@ -31,7 +31,7 @@ const getProductsByCategory = async (req, res, next) => {
   const categoryName = req.param.categoryName;
 
   try {
-    const products = await Product.find({ categoryName: categoryName });
+    const products = await Product.findByCategoryName(categoryName);
 
     notFoundError(products, 'products');
 

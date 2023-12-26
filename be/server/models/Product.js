@@ -82,6 +82,11 @@ const productSchema = new mongoose.Schema(
 //middileware
 setStockStatusOnSave(productSchema);
 
+//statics method
+productSchema.statics.findByCategoryName = function (categoryName) {
+  return this.find({ categoryName: categoryName });
+}
+
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
