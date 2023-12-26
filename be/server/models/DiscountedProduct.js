@@ -11,8 +11,9 @@ const DiscountedProduct = Product.discriminator('DiscountedProduct', discountedP
 
 /**
  ** Sample
- * const product1 = new Product({ name: 'Laptop', price: 1000 });
- *  const product2 = new DiscountedProduct({ name: 'Smartphone', price: 500, discountPercentage: 10 });
+ * const product1 = new Product({ name: 'Laptop', price: 1000, productType: 'Product' });
+ * const product2 = new DiscountedProduct({ name: 'Smartphone', price: 500, discountPercentage: 10, productType: 'DiscountedProduct' });
+ *! NOT: DiscountedProduct; Product.discriminator şeklinde tanımlandığı için  productType: 'Product' key'lerini kullanmasak da olurdu. Bunlar otomatik ekleniyor. 
  */
 
 module.exports = DiscountedProduct;

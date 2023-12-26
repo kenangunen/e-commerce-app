@@ -61,6 +61,7 @@ const productSchema = new mongoose.Schema(
   },
   {
     shardKey: { categoryName: 1 },
+    discriminatorKey: 'productType',
     toJSON: { virtuals: true },
     virtuals: {
       fullProductName: {
