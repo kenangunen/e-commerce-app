@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { randomUUID } = require('crypto');
-const { setStockStatusOnSave } = require('../middleware/productMiddleware');
+const { setStockStatusOnSave, handleUpdateVersionMiddleware } = require('../middleware/productMiddleware');
 
 const productSchema = new mongoose.Schema(
   {
@@ -60,9 +60,12 @@ const productSchema = new mongoose.Schema(
     }
   },
   {
+    strict: true, // An undefined field in the schema, however, due to strict mode, it is not saved.
+    strictQuery: 'throw', // "throw": Throw an error for unknown fields.
     shardKey: { categoryName: 1 },
     discriminatorKey: 'productType',
     toJSON: { virtuals: true },
+    optimisticConcurrency: true,
     virtuals: {
       fullProductName: {
         get() {
@@ -81,6 +84,7 @@ const productSchema = new mongoose.Schema(
 
 //middileware
 setStockStatusOnSave(productSchema);
+handleUpdateVersionMiddleware(productSchema);
 
 //statics method
 productSchema.statics.findByCategoryName = function (categoryName) {

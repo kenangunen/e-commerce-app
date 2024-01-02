@@ -1,5 +1,5 @@
 const Product = require('../models/ProductModel');
-const { notFoundError } = require('../utils/errors');
+const { checkExistence, checkVersionConflict, checkVersionError } = require('../utils/errors');
 
 // Fetch all products
 const getAllProducts = async (req, res, next) => {
@@ -18,7 +18,7 @@ const getProductById = async (req, res, next) => {
   try {
     const product = await Product.findById(productId);
 
-    notFoundError(productId, 'product');
+    checkExistence(productId, 'product', res);
 
     res.json(product);
   } catch (error) {
@@ -33,7 +33,7 @@ const getProductsByCategory = async (req, res, next) => {
   try {
     const products = await Product.findByCategoryName(categoryName);
 
-    notFoundError(products, 'products');
+    checkExistence(products, 'products', res);
 
     res.json(products);
   } catch (error) {
@@ -78,11 +78,11 @@ const updateProduct = async (req, res, next) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(productId, { name, price, description }, { new: true });
 
-    notFoundError(updatedProduct, 'updatedProduct');
+    checkExistence(updatedProduct, 'updatedProduct', res);
 
     res.json(updatedProduct);
   } catch (error) {
-    next(error);
+    checkVersionError(error, res, next);
   }
 };
 
@@ -93,7 +93,7 @@ const deleteProduct = async (req, res, next) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(productId);
 
-    notFoundError(deletedProduct, 'deletedProduct');
+    checkExistence(deletedProduct, 'deletedProduct', res);
 
     res.json(deletedProduct);
   } catch (error) {
