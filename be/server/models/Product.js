@@ -1,57 +1,70 @@
 const mongoose = require('mongoose');
-const { randomUUID } = require('crypto');
+const Brand = require('./Brand');
 const { setStockStatusOnSave, handleUpdateVersionMiddleware } = require('../middleware/productMiddleware');
+const { colorNameList } = require('../constants/productConstant');
 
 const productSchema = new mongoose.Schema(
   {
-    // defined fields
     productId: {
       type: String,
-      default: () => randomUUID()
+      required: true,
+      uuid: { type: String, match: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/ },
     },
     productName: {
       type: String,
-      required: [true, '{PATH} alanı zorunludur.'],
-      maxlength: [50, '{PATH}  alanı (`{VALUE}`), ({MAXLENGTH}) karakterden küçük olmalıdır.'],
-      minlength: [3, '{PATH}  alanı (`{VALUE}`), ({MINLENGTH}) karakterden büyük olmalıdır. ']
+      min: 2,
+      max: 100,
+      required: true
     },
     colorName: {
-      // collorId tut, color tablosundan isimlerini al.
       type: String,
-      required: [true, '{PATH} alanı zorunludur.']
+      enum: colorNameList,
+      required: true
     },
     sellerName: {
       // sellerId tut, seller tablosundan isimlerini al.
       type: String,
-      required: [true, '{PATH} alanı zorunludur.']
+      min: 2,
+      max: 100,
+      required: true,
     },
     brandName: {
       // brandId tut, brand tablosundan isimlerini al.
       type: String,
-      required: [true, '{PATH} alanı zorunludur.']
+      required: true,
+      enum: [],
+      validate: {
+        validator: async function (value) {
+          const brands = await Brand.find({}, 'name');
+          const brandNames = brands.map(brand => brand.name);
+          return brandNames.includes(value);
+        },
+        message: props => `${props.value} is not a valid brand!`,
+      }
     },
     categoryName: {
       type: String,
-      minlength: [3, 'Kategori alanı minimum {MINLENGTH} karakter olabilir.'],
-      maxlength: 30
+      min: 2,
+      max: 100,
     },
     price: {
       type: Number,
-      required: [true, '{PATH} alanı zorunludur.']
+      required: true
     },
     description: {
       type: String,
-      maxlength: [200, '{PATH}  alanı (`{VALUE}`), ({MAXLENGTH}) karakterden küçük olmalıdır.'],
-      required: [true, '{PATH} alanı zorunludur.']
+      min: 2,
+      max: 100,
+      required: true
     },
     stockCount: {
       type: Number,
-      required: [true, '{PATH} alanı zorunludur.']
+      required: true
     },
     stockStatus: {
       type: Boolean,
       default: true,
-      required: [true, '{PATH} alanı zorunludur.']
+      required: true
     },
     image: Buffer,
     addedDate: {
